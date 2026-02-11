@@ -3,21 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ANTHONIO | QUANTUM OS v8.0</title>
+    <title>ANTHONIO | QUANTUM AI v9.8</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --neon-red: #ff003c; --neon-purple: #bc13fe; --neon-gold: #ffb800; --neon-blue: #00d2ff;
-            --bg: #030305; --panel: rgba(15, 15, 25, 0.95);
+            --bg: #030305; --panel: rgba(15, 15, 25, 0.98);
         }
 
         body {
             background-color: var(--bg); color: #e0e0e0; font-family: 'Rajdhani', sans-serif;
-            margin: 0; padding: 0; min-height: 100vh; overflow-x: hidden;
+            margin: 0; padding: 0; min-height: 100vh;
             background-image: radial-gradient(circle at top, #101025 0%, #030305 100%);
         }
 
-        /* --- AUTH SCREEN --- */
+        /* --- AUTH --- */
         #reg-screen {
             position: fixed; inset: 0; background: var(--bg); z-index: 10000;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -26,239 +26,215 @@
         .input-dark {
             background: #000; border: 1px solid #333; color: var(--neon-blue);
             padding: 15px; margin: 10px 0; width: 260px; font-family: 'Orbitron';
-            text-align: center; outline: none; border-radius: 8px;
+            text-align: center; border-radius: 8px; outline: none;
         }
 
-        /* --- NAVIGATION BAR --- */
-        .nav-bar {
-            position: fixed; bottom: 0; width: 100%; height: 75px;
-            background: #0a0a12; border-top: 1px solid #222;
-            display: flex; justify-content: space-around; align-items: center; z-index: 1000;
-        }
+        /* --- HEADER --- */
+        .header-area { text-align: center; padding: 20px 0 10px 0; }
+        .header-title { color: var(--neon-red); font-family: 'Orbitron'; font-size: 1.8rem; margin: 0; text-shadow: 0 0 10px var(--neon-red); }
+        .online-counter { font-family: 'Orbitron'; font-size: 0.65rem; color: #00ff00; margin-top: 5px; opacity: 0.8; }
 
-        .nav-item {
-            color: #444; font-family: 'Orbitron'; font-size: 0.6rem;
-            display: flex; flex-direction: column; align-items: center; cursor: pointer; transition: 0.3s;
-        }
-        .nav-item.active.purple { color: var(--neon-purple); text-shadow: 0 0 10px var(--neon-purple); }
-        .nav-item.active.red { color: var(--neon-red); text-shadow: 0 0 10px var(--neon-red); }
-        .nav-item.active.gold { color: var(--neon-gold); text-shadow: 0 0 10px var(--neon-gold); }
-        .nav-icon { font-size: 22px; margin-bottom: 5px; }
-
-        /* --- PAGES --- */
-        .page { display: none; padding: 20px; padding-bottom: 100px; animation: fadeIn 0.4s ease-out; }
-        .page.active { display: block; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
-
-        .header-area { text-align: center; margin-bottom: 15px; padding-top: 20px; }
-        .header-title { color: var(--neon-red); font-family: 'Orbitron'; font-size: 2rem; margin: 0; text-shadow: 0 0 15px var(--neon-red); }
-        .online-counter { font-family: 'Orbitron'; font-size: 0.7rem; color: #00ff00; margin-top: 5px; }
-
-        /* --- UI COMPONENTS --- */
+        /* --- COMPACT PREDICTION BOX --- */
         .main-card {
-            background: var(--panel); border: 2px solid; border-radius: 25px;
-            padding: 30px; margin: 0 auto; max-width: 350px; text-align: center;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            background: var(--panel); border-radius: 20px;
+            padding: 20px; margin: 0 auto; max-width: 320px; text-align: center;
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
+        /* LE CADRE PLUS PETIT ET POPULAIRE */
         .prediction-box {
-            background: rgba(0,0,0,0.85); border: 1px solid #333; border-radius: 20px;
-            padding: 25px 10px; margin: 25px 0; position: relative; overflow: hidden;
+            background: linear-gradient(145deg, #0a0a0f, #151520);
+            border: 1px solid #333; border-radius: 12px;
+            padding: 15px 5px; margin: 15px 0;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.5);
         }
 
-        .time-display { font-family: 'Orbitron'; font-size: 2.6rem; font-weight: bold; display: block; color: #fff; }
-        .cote-display { font-family: 'Orbitron'; font-size: 1.1rem; opacity: 0.7; color: var(--neon-blue); display: block; margin-top: 5px; }
-        .min-take { font-size: 0.8rem; color: #00ff00; font-weight: bold; margin-top: 15px; display: block; letter-spacing: 1px; text-transform: uppercase; }
+        .time-display { font-family: 'Orbitron'; font-size: 2.2rem; font-weight: bold; color: #fff; line-height: 1; }
+        .cote-area { display: flex; justify-content: space-around; margin-top: 10px; border-top: 1px solid #222; padding-top: 10px; }
+        .cote-label { font-size: 0.7rem; color: #888; display: block; }
+        .cote-val { font-family: 'Orbitron'; font-size: 0.9rem; color: var(--neon-blue); font-weight: bold; }
+        .min-take { font-size: 0.75rem; color: #00ff00; font-weight: bold; margin-top: 8px; display: block; }
+
+        /* --- INPUTS & BUTTONS --- */
+        .inputs-row { display: flex; justify-content: center; gap: 10px; margin-bottom: 15px; }
+        .calibration-input {
+            background: #000; border: 1px solid #444; color: white; padding: 10px;
+            width: 60px; text-align: center; border-radius: 8px; font-family: 'Orbitron';
+        }
 
         .btn-action {
-            width: 100%; padding: 18px; background: transparent; border: 2px solid;
-            color: #fff; font-family: 'Orbitron'; font-size: 0.85rem; border-radius: 15px; cursor: pointer;
-            transition: 0.2s;
-        }
-        .btn-action:active { transform: scale(0.95); opacity: 0.8; }
-
-        .calibration-input {
-            background: #111; border: 1px solid #333; color: white; padding: 12px;
-            width: 75px; text-align: center; border-radius: 10px; font-family: 'Orbitron'; margin: 5px; font-size: 1rem;
+            width: 100%; padding: 15px; background: transparent; border: 2px solid;
+            color: #fff; font-family: 'Orbitron'; font-size: 0.8rem; border-radius: 10px; cursor: pointer;
+            text-transform: uppercase; letter-spacing: 1px;
         }
 
+        /* --- NAV BAR --- */
+        .nav-bar {
+            position: fixed; bottom: 0; width: 100%; height: 70px;
+            background: #080810; border-top: 1px solid #222;
+            display: flex; justify-content: space-around; align-items: center;
+        }
+        .nav-item { color: #444; font-family: 'Orbitron'; font-size: 0.55rem; display: flex; flex-direction: column; align-items: center; cursor: pointer; }
+        .nav-item.active.purple { color: var(--neon-purple); }
+        .nav-item.active.red { color: var(--neon-red); }
+        .nav-item.active.gold { color: var(--neon-gold); }
+        .nav-icon { font-size: 20px; margin-bottom: 3px; }
+
+        .page { display: none; padding: 10px 20px 90px 20px; animation: fadeIn 0.3s ease; }
+        .page.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .ia-status { font-size: 0.6rem; color: #555; margin-top: 8px; font-family: 'Orbitron'; }
+        
         .history-item { 
-            background: rgba(255,255,255,0.03); padding: 12px; border-radius: 10px; 
-            margin-top: 10px; display: flex; justify-content: space-between; font-size: 0.8rem; border-left: 4px solid;
-            font-family: 'Orbitron';
+            background: rgba(255,255,255,0.02); padding: 10px; border-radius: 8px; 
+            margin-top: 8px; display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.75rem; border-left: 3px solid; font-family: 'Orbitron';
         }
+        .btn-win { background: #00ff00; color: #000; border: none; border-radius: 3px; padding: 3px 6px; font-size: 9px; font-weight: bold; }
     </style>
 </head>
 <body>
 
     <div id="reg-screen">
-        <h2 style="color: var(--neon-blue); font-family: 'Orbitron'; letter-spacing: 3px;">QUANTUM LOGIN</h2>
-        <input type="password" id="access-c" class="input-dark" placeholder="CODE D'ACCÈS">
-        <button class="input-dark" style="background:var(--neon-blue); color:white; font-weight:bold; cursor:pointer;" onclick="unlock()">DÉVERROUILLER</button>
+        <h2 style="color: var(--neon-blue); font-family: 'Orbitron';">ANTHONIO AI</h2>
+        <input type="password" id="access-c" class="input-dark" placeholder="ACCESS CODE">
+        <button class="input-dark" style="background:var(--neon-blue); color:white;" onclick="unlock()">LOGIN</button>
     </div>
 
     <div id="top-head" style="display:none;">
         <div class="header-area">
             <h1 class="header-title">ANTHONIO</h1>
-            <div class="online-counter">● <span id="user-count">482</span> USERS ONLINE</div>
+            <div class="online-counter">● <span id="user-count">491</span> SERVERS CONNECTED</div>
         </div>
     </div>
 
     <div id="page-violet" class="page active">
-        <div class="main-card" style="border-color: var(--neon-purple);">
-            <span style="color:var(--neon-purple); font-weight:bold; letter-spacing:2px;">FLUX VIOLET (2x-4x)</span>
-            <div class="prediction-box">
-                <span class="time-display" id="res-v-time">--:--:--</span>
-                <span class="cote-display" id="res-v-cote">MAX PROB: 0.00x</span>
-                <span class="min-take" id="res-v-min">ANALYSE EN ATTENTE</span>
+        <div class="main-card">
+            <span style="color:var(--neon-purple); font-weight:bold; font-size: 0.8rem;">VIOLET ALGO v2.0</span>
+            <div class="prediction-box" style="border-top: 2px solid var(--neon-purple);">
+                <span class="time-display" id="res-v-time">--:--</span>
+                <div class="cote-area">
+                    <div><span class="cote-label">MAX</span><span class="cote-val" id="res-v-cote">0.00x</span></div>
+                    <div><span class="cote-label">TARGET</span><span class="cote-val" style="color:#00ff00;" id="res-v-min">0.00x</span></div>
+                </div>
             </div>
-            <div style="margin-bottom:20px;">
+            <div class="inputs-row">
                 <input type="number" id="h-violet" placeholder="HH" class="calibration-input">
                 <input type="number" id="m-violet" placeholder="MM" class="calibration-input">
             </div>
-            <button class="btn-action" style="border-color:var(--neon-purple); color:var(--neon-purple);" onclick="lancerCalcul('violet')">DÉCRYPTER VIOLET</button>
+            <button class="btn-action" style="border-color:var(--neon-purple); color:var(--neon-purple);" onclick="lancerCalcul('violet')">ANALYZE</button>
+            <div class="ia-status" id="status-v">IA Cycle: 0/20 wins</div>
         </div>
-        <div id="hist-violet" style="max-width:350px; margin: 25px auto;"></div>
+        <div id="hist-violet"></div>
     </div>
 
     <div id="page-rose" class="page">
-        <div class="main-card" style="border-color: var(--neon-red);">
-            <span style="color:var(--neon-red); font-weight:bold; letter-spacing:2px;">CHASSEUR ROSE (5x-15x)</span>
-            <div class="prediction-box">
-                <span class="time-display" id="res-r-time">--:--:--</span>
-                <span class="cote-display" id="res-r-cote">MAX PROB: 0.00x</span>
-                <span class="min-take" id="res-r-min">ANALYSE EN ATTENTE</span>
+        <div class="main-card">
+            <span style="color:var(--neon-red); font-weight:bold; font-size: 0.8rem;">PINK POISSON ENGINE</span>
+            <div class="prediction-box" style="border-top: 2px solid var(--neon-red);">
+                <span class="time-display" id="res-r-time">--:--</span>
+                <div class="cote-area">
+                    <div><span class="cote-label">MAX</span><span class="cote-val" id="res-r-cote">0.00x</span></div>
+                    <div><span class="cote-label">TARGET</span><span class="cote-val" style="color:#00ff00;" id="res-r-min">0.00x</span></div>
+                </div>
             </div>
-            <div style="margin-bottom:20px;">
+            <div class="inputs-row">
                 <input type="number" id="h-rose" placeholder="HH" class="calibration-input">
                 <input type="number" id="m-rose" placeholder="MM" class="calibration-input">
             </div>
-            <button class="btn-action" style="border-color:var(--neon-red); color:var(--neon-red);" onclick="lancerCalcul('rose')">DÉCRYPTER ROSE</button>
+            <button class="btn-action" style="border-color:var(--neon-red); color:var(--neon-red);" onclick="lancerCalcul('rose')">ANALYZE</button>
+            <div class="ia-status" id="status-r">IA Cycle: 0/20 wins</div>
         </div>
-        <div id="hist-rose" style="max-width:350px; margin: 25px auto;"></div>
+        <div id="hist-rose"></div>
     </div>
 
     <div id="page-gold" class="page">
-        <div class="main-card" style="border-color: var(--neon-gold);">
-            <span style="color:var(--neon-gold); font-weight:bold; letter-spacing:2px;">JACKPOT GOLD (20x+)</span>
-            <div class="prediction-box">
-                <span class="time-display" id="res-g-time">--:--:--</span>
-                <span class="cote-display" id="res-g-cote">MAX PROB: 0.00x</span>
-                <span class="min-take" id="res-g-min">ANALYSE EN ATTENTE</span>
+        <div class="main-card">
+            <span style="color:var(--neon-gold); font-weight:bold; font-size: 0.8rem;">GOLD LCG JACKPOT</span>
+            <div class="prediction-box" style="border-top: 2px solid var(--neon-gold);">
+                <span class="time-display" id="res-g-time">--:--</span>
+                <div class="cote-area">
+                    <div><span class="cote-label">MAX</span><span class="cote-val" id="res-g-cote">0.00x</span></div>
+                    <div><span class="cote-label">TARGET</span><span class="cote-val" style="color:#00ff00;" id="res-g-min">0.00x</span></div>
+                </div>
             </div>
-            <div style="margin-bottom:20px;">
+            <div class="inputs-row">
                 <input type="number" id="h-gold" placeholder="HH" class="calibration-input">
                 <input type="number" id="m-gold" placeholder="MM" class="calibration-input">
             </div>
-            <button class="btn-action" style="border-color:var(--neon-gold); color:var(--neon-gold);" onclick="lancerCalcul('gold')">DÉCRYPTER GOLD</button>
+            <button class="btn-action" style="border-color:var(--neon-gold); color:var(--neon-gold);" onclick="lancerCalcul('gold')">ANALYZE</button>
+            <div class="ia-status" id="status-g">IA Cycle: 0/20 wins</div>
         </div>
-        <div id="hist-gold" style="max-width:350px; margin: 25px auto;"></div>
+        <div id="hist-gold"></div>
     </div>
 
-    <div class="nav-bar" id="bottom-nav" style="display:none">
-        <div class="nav-item active purple" onclick="changePage('violet', this)">
-            <span class="nav-icon">👻</span><span>VIOLET</span>
-        </div>
-        <div class="nav-item red" onclick="changePage('rose', this)">
-            <span class="nav-icon">👺</span><span>ROSE</span>
-        </div>
-        <div class="nav-item gold" onclick="changePage('gold', this)">
-            <span class="nav-icon">👑</span><span>GOLD</span>
-        </div>
-    </div>
+    <nav class="nav-bar" id="bottom-nav" style="display:none;">
+        <div class="nav-item active purple" onclick="changePage('violet', this)"><span class="nav-icon">📊</span>VIOLET</div>
+        <div class="nav-item red" onclick="changePage('rose', this)"><span class="nav-icon">📈</span>PINK</div>
+        <div class="nav-item gold" onclick="changePage('gold', this)"><span class="nav-icon">🏆</span>GOLD</div>
+    </nav>
 
     <script>
-        // --- CONFIGURATION DES MOTEURS MATHÉMATIQUES ---
-        const FIBO = [2, 3, 5, 8, 13, 21, 34];
-        const LAMBDA = 0.12; 
-        const LCG_A = 1664525;
-        const LCG_C = 1013904223;
-        const LCG_M = Math.pow(2, 32);
+        let ai_memory = JSON.parse(localStorage.getItem('ai_memory')) || {
+            violet: { coeff: 1.0, wins: 0 }, rose: { coeff: 1.0, wins: 0 }, gold: { coeff: 1.0, wins: 0 }
+        };
 
-        // Compteur de personnes en ligne réaliste
-        function updateOnline() {
-            let count = Math.floor(Math.random() * (580 - 420 + 1)) + 420;
-            document.getElementById('user-count').innerText = count;
+        function validerSucces(type) {
+            ai_memory[type].wins += 1;
+            let winsInCycle = ai_memory[type].wins % 20;
+            document.getElementById('status-' + type.charAt(0)).innerText = "IA Cycle: " + winsInCycle + "/20 wins";
+            if (ai_memory[type].wins % 20 === 0) {
+                ai_memory[type].coeff *= 0.96;
+                alert("STRATEGY UPDATED: Engine " + type + " optimized after 20 wins!");
+            }
+            localStorage.setItem('ai_memory', JSON.stringify(ai_memory));
         }
-        setInterval(updateOnline, 5000);
 
         function unlock() {
             if(document.getElementById('access-c').value === "091110") {
                 document.getElementById('reg-screen').style.display = 'none';
                 document.getElementById('top-head').style.display = 'block';
                 document.getElementById('bottom-nav').style.display = 'flex';
-                updateOnline();
-            } else { alert("CODE D'ACCÈS INVALIDE"); }
+            } else { alert("WRONG CODE"); }
         }
 
-        function changePage(pageId, el) {
+        function changePage(id, el) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            document.getElementById('page-' + pageId).classList.add('active');
+            document.getElementById('page-' + id).classList.add('active');
             el.classList.add('active');
         }
 
         function lancerCalcul(type) {
             let h = parseInt(document.getElementById('h-' + type).value);
             let m = parseInt(document.getElementById('m-' + type).value);
-            
-            if(isNaN(h) || isNaN(m)) { alert("Entrez l'heure du dernier signal !"); return; }
+            if(isNaN(h) || isNaN(m)) { alert("Enter calibration!"); return; }
 
-            let prefix = type === 'violet' ? 'v' : (type === 'rose' ? 'r' : 'g');
-            let displayTime = document.getElementById('res-' + prefix + '-time');
-            displayTime.innerText = "DECRYPTING...";
+            let p = type.charAt(0);
+            document.getElementById('res-' + p + '-time').innerText = "--:--";
 
             setTimeout(() => {
-                let intervalle = 0;
-                let coteMax = 0;
+                let inter = 0; let mx = 0; let c = ai_memory[type].coeff;
+                if(type === 'violet') { inter = Math.floor((((h+m)%7)+3)*c); mx = (2.1 + (m%2.5)).toFixed(2); }
+                else if(type === 'rose') { inter = Math.floor((12 + (m%10))*c); mx = (8 + (h%15)).toFixed(2); }
+                else { inter = Math.floor((30 + (m%20))*c); mx = (30 + (m*2)%100).toFixed(2); }
 
-                // 1. CALCUL DE L'INTERVALLE SELON L'ALGORITHME
-                if (type === 'violet') {
-                    // MOTEUR FIBONACCI
-                    let idx = (h + m) % FIBO.length;
-                    intervalle = FIBO[idx] + 1;
-                    coteMax = (2.1 + (m % 2.5)).toFixed(2);
-                } 
-                else if (type === 'rose') {
-                    // MOTEUR LOI DE POISSON
-                    let p = ((m * 7) % 100) / 100; 
-                    intervalle = Math.floor(-Math.log(1 - 0.7) / LAMBDA) + (m % 10);
-                    coteMax = (8.0 + (h % 10) + (m / 12)).toFixed(2);
-                } 
-                else {
-                    // MOTEUR LCG (DÉTERMINISTE)
-                    let seed = (h * 3600) + (m * 60);
-                    let lcg = (LCG_A * seed + LCG_C) % LCG_M;
-                    intervalle = (lcg % 40) + 20; 
-                    coteMax = (25.0 + (m * 2.1) % 120).toFixed(2);
-                }
-
-                // 2. CALCUL DU TEMPS FINAL
-                let totalMin = m + intervalle;
-                let finalM = totalMin % 60;
-                let finalH = (h + Math.floor(totalMin / 60)) % 24;
-                let sec = ((m * 17 + h) % 59).toString().padStart(2, '0');
+                let tm = m + inter; let fh = (h + Math.floor(tm/60))%24; let fm = tm%60;
+                let res = fh.toString().padStart(2,'0')+":"+fm.toString().padStart(2,'0')+":"+((m*13)%59).toString().padStart(2,'0');
                 
-                let coteMin = (coteMax * 0.85).toFixed(2); // Sécurité de retrait à 85%
-                let tempsFinal = finalH.toString().padStart(2, '0') + ":" + finalM.toString().padStart(2, '0') + ":" + sec;
+                document.getElementById('res-' + p + '-time').innerText = res;
+                document.getElementById('res-' + p + '-cote').innerText = mx + "x";
+                document.getElementById('res-' + p + '-min').innerText = (mx * 0.85).toFixed(2) + "x";
 
-                // 3. MISE À JOUR UI
-                displayTime.innerText = tempsFinal;
-                document.getElementById('res-' + prefix + '-cote').innerText = "MAX PROB: " + coteMax + "x";
-                document.getElementById('res-' + prefix + '-min').innerText = "RETRAIT SÉCURISÉ : " + coteMin + "x";
-
-                // 4. HISTORIQUE
-                let bColor = type === 'violet' ? '#bc13fe' : (type === 'rose' ? '#ff003c' : '#ffb800');
                 let hist = document.getElementById('hist-' + type);
                 let div = document.createElement('div');
                 div.className = 'history-item';
-                div.style.borderColor = bColor;
-                div.innerHTML = `<span>SIGNAL : ${tempsFinal}</span> <b style="color:#00ff00">${coteMin}x</b>`;
+                div.style.borderColor = type==='violet'?'#bc13fe':type==='rose'?'#ff003c':'#ffb800';
+                div.innerHTML = `<span>${res}</span> <button class="btn-win" onclick="validerSucces('${type}')">WIN</button> <b>${(mx*0.85).toFixed(2)}x</b>`;
                 hist.prepend(div);
-                if(hist.children.length > 3) hist.lastChild.remove();
-
-            }, 1200);
+                if(hist.children.length > 2) hist.lastChild.remove();
+            }, 1000);
         }
     </script>
 </body>
