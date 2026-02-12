@@ -2,239 +2,201 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ANTHONIO | QUANTUM AI v9.8</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ANTHONIO | FULL_STRATEGY_v32</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&family=Orbitron:wght@700&family=Source+Code+Pro&display=swap" rel="stylesheet">
     <style>
         :root {
-            --neon-red: #ff003c; --neon-purple: #bc13fe; --neon-gold: #ffb800; --neon-blue: #00d2ff;
-            --bg: #030305; --panel: rgba(15, 15, 25, 0.98);
+            --cyan: #00f2ff; --violet: #bc13fe; --gold: #ffb800; --red: #ff003c;
+            --p5: #00ffa2; --p10: #0077ff; --glass: rgba(255, 255, 255, 0.03); 
+            --border: rgba(255, 255, 255, 0.1);
         }
 
         body {
-            background-color: var(--bg); color: #e0e0e0; font-family: 'Rajdhani', sans-serif;
-            margin: 0; padding: 0; min-height: 100vh;
-            background-image: radial-gradient(circle at top, #101025 0%, #030305 100%);
+            background: #000; color: #fff; font-family: 'Poppins', sans-serif;
+            margin: 0; padding: 0; background-image: radial-gradient(circle at 50% 0%, #001a1a 0%, #000 100%);
         }
 
-        /* --- AUTH --- */
-        #reg-screen {
-            position: fixed; inset: 0; background: var(--bg); z-index: 10000;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        /* --- LOGIN --- */
+        #login-screen { position: fixed; inset: 0; z-index: 10000; background: #000; display: flex; align-items: center; justify-content: center; }
+        .box-login { background: var(--glass); backdrop-filter: blur(20px); padding: 40px; border-radius: 30px; border: 1px solid var(--border); text-align: center; width: 85%; max-width: 350px; }
+        .input-key { width: 90%; background: #000; border: 1px solid var(--cyan); color: var(--cyan); padding: 15px; border-radius: 12px; margin: 20px 0; outline: none; text-align: center; font-family: 'Source Code Pro'; }
+
+        /* --- APP --- */
+        #main-app { display: none; padding: 15px; padding-bottom: 120px; }
+        .header { text-align: center; margin-bottom: 20px; }
+        .header h1 { font-family: 'Orbitron'; font-size: 1.5rem; letter-spacing: 4px; margin: 0; text-shadow: 0 0 10px var(--cyan); }
+        .status { font-size: 0.6rem; color: var(--cyan); margin-top: 5px; text-transform: uppercase; }
+
+        /* --- GRID DES 7 STRATÉGIES --- */
+        .frame-container { display: flex; flex-direction: column; gap: 12px; }
+        .strat-card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(0,0,0,0.8));
+            border-radius: 20px; padding: 15px; border-left: 5px solid var(--cyan);
+            border-top: 1px solid var(--border); position: relative;
         }
 
-        .input-dark {
-            background: #000; border: 1px solid #333; color: var(--neon-blue);
-            padding: 15px; margin: 10px 0; width: 260px; font-family: 'Orbitron';
-            text-align: center; border-radius: 8px; outline: none;
-        }
+        /* Couleurs spécifiques */
+        .card-violet { border-left-color: var(--violet); }
+        .card-p5 { border-left-color: var(--p5); }
+        .card-p10 { border-left-color: var(--p10); }
+        .card-gold { border-left-color: var(--gold); }
+        .card-red { border-left-color: var(--red); }
 
-        /* --- HEADER --- */
-        .header-area { text-align: center; padding: 20px 0 10px 0; }
-        .header-title { color: var(--neon-red); font-family: 'Orbitron'; font-size: 1.8rem; margin: 0; text-shadow: 0 0 10px var(--neon-red); }
-        .online-counter { font-family: 'Orbitron'; font-size: 0.65rem; color: #00ff00; margin-top: 5px; opacity: 0.8; }
+        .label { font-family: 'Orbitron'; font-size: 0.5rem; color: #666; letter-spacing: 1px; }
+        .val-cote { font-family: 'Orbitron'; font-size: 1.8rem; display: block; margin: 2px 0; }
+        .entry-box { display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.4); padding: 8px 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05); margin: 8px 0; }
+        .time-text { font-family: 'Source Code Pro'; font-size: 1rem; color: var(--cyan); font-weight: bold; }
+        .advice { font-size: 0.6rem; color: #999; font-style: italic; }
 
-        /* --- COMPACT PREDICTION BOX --- */
-        .main-card {
-            background: var(--panel); border-radius: 20px;
-            padding: 20px; margin: 0 auto; max-width: 320px; text-align: center;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
+        /* --- CONTROLS --- */
+        .control-panel { background: var(--glass); border-radius: 25px; border: 1px solid var(--border); padding: 20px; margin-top: 20px; }
+        .num-in { width: 42%; background: #000; border: 1px solid var(--border); color: #fff; padding: 15px; border-radius: 12px; text-align: center; font-size: 1.2rem; font-family: 'Orbitron'; }
+        .btn-scan { width: 100%; padding: 18px; background: linear-gradient(45deg, #0044ff, var(--cyan)); border: none; border-radius: 15px; color: #fff; font-weight: bold; font-family: 'Orbitron'; cursor: pointer; margin-top: 15px; box-shadow: 0 5px 15px rgba(0,242,255,0.3); }
 
-        /* LE CADRE PLUS PETIT ET POPULAIRE */
-        .prediction-box {
-            background: linear-gradient(145deg, #0a0a0f, #151520);
-            border: 1px solid #333; border-radius: 12px;
-            padding: 15px 5px; margin: 15px 0;
-            box-shadow: inset 0 0 15px rgba(0,0,0,0.5);
-        }
+        /* --- CHAT FLOTTANT --- */
+        .chat-toggle { position: fixed; bottom: 85px; right: 20px; width: 55px; height: 55px; background: var(--cyan); border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 1000; cursor: pointer; color: #000; }
+        #floating-chat { position: fixed; bottom: 85px; right: 20px; width: 240px; height: 300px; background: rgba(0,0,0,0.95); border-radius: 20px; border: 1px solid var(--border); z-index: 999; display: flex; flex-direction: column; transform: translateX(300px); transition: 0.5s; }
+        #floating-chat.open { transform: translateX(0); }
+        .chat-body { flex: 1; overflow-y: auto; padding: 10px; font-size: 0.65rem; }
+        .msg { margin-bottom: 10px; background: rgba(255,255,255,0.03); padding: 8px; border-radius: 10px; }
+        .msg b { color: var(--cyan); display: block; }
+        .msg.creator-msg { border: 1px solid var(--cyan); background: rgba(0,242,255,0.05); }
 
-        .time-display { font-family: 'Orbitron'; font-size: 2.2rem; font-weight: bold; color: #fff; line-height: 1; }
-        .cote-area { display: flex; justify-content: space-around; margin-top: 10px; border-top: 1px solid #222; padding-top: 10px; }
-        .cote-label { font-size: 0.7rem; color: #888; display: block; }
-        .cote-val { font-family: 'Orbitron'; font-size: 0.9rem; color: var(--neon-blue); font-weight: bold; }
-        .min-take { font-size: 0.75rem; color: #00ff00; font-weight: bold; margin-top: 8px; display: block; }
-
-        /* --- INPUTS & BUTTONS --- */
-        .inputs-row { display: flex; justify-content: center; gap: 10px; margin-bottom: 15px; }
-        .calibration-input {
-            background: #000; border: 1px solid #444; color: white; padding: 10px;
-            width: 60px; text-align: center; border-radius: 8px; font-family: 'Orbitron';
-        }
-
-        .btn-action {
-            width: 100%; padding: 15px; background: transparent; border: 2px solid;
-            color: #fff; font-family: 'Orbitron'; font-size: 0.8rem; border-radius: 10px; cursor: pointer;
-            text-transform: uppercase; letter-spacing: 1px;
-        }
-
-        /* --- NAV BAR --- */
-        .nav-bar {
-            position: fixed; bottom: 0; width: 100%; height: 70px;
-            background: #080810; border-top: 1px solid #222;
-            display: flex; justify-content: space-around; align-items: center;
-        }
-        .nav-item { color: #444; font-family: 'Orbitron'; font-size: 0.55rem; display: flex; flex-direction: column; align-items: center; cursor: pointer; }
-        .nav-item.active.purple { color: var(--neon-purple); }
-        .nav-item.active.red { color: var(--neon-red); }
-        .nav-item.active.gold { color: var(--neon-gold); }
-        .nav-icon { font-size: 20px; margin-bottom: 3px; }
-
-        .page { display: none; padding: 10px 20px 90px 20px; animation: fadeIn 0.3s ease; }
-        .page.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        .ia-status { font-size: 0.6rem; color: #555; margin-top: 8px; font-family: 'Orbitron'; }
-        
-        .history-item { 
-            background: rgba(255,255,255,0.02); padding: 10px; border-radius: 8px; 
-            margin-top: 8px; display: flex; justify-content: space-between; align-items: center;
-            font-size: 0.75rem; border-left: 3px solid; font-family: 'Orbitron';
-        }
-        .btn-win { background: #00ff00; color: #000; border: none; border-radius: 3px; padding: 3px 6px; font-size: 9px; font-weight: bold; }
+        .nav { position: fixed; bottom: 0; width: 100%; height: 70px; background: #000; border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; z-index: 900; }
     </style>
 </head>
 <body>
 
-    <div id="reg-screen">
-        <h2 style="color: var(--neon-blue); font-family: 'Orbitron';">ANTHONIO AI</h2>
-        <input type="password" id="access-c" class="input-dark" placeholder="ACCESS CODE">
-        <button class="input-dark" style="background:var(--neon-blue); color:white;" onclick="unlock()">LOGIN</button>
-    </div>
-
-    <div id="top-head" style="display:none;">
-        <div class="header-area">
-            <h1 class="header-title">ANTHONIO</h1>
-            <div class="online-counter">● <span id="user-count">491</span> SERVERS CONNECTED</div>
+    <div id="login-screen">
+        <div class="box-login">
+            <h2 style="font-family:'Orbitron'; color:#fff; font-size:1.1rem;">ANTHONIO_ULTIMATE</h2>
+            <input type="text" id="access-key" class="input-key" placeholder="CODE LICENCE">
+            <button class="btn-scan" onclick="verify()">ACCÈS SYSTÈME</button>
         </div>
     </div>
 
-    <div id="page-violet" class="page active">
-        <div class="main-card">
-            <span style="color:var(--neon-purple); font-weight:bold; font-size: 0.8rem;">VIOLET ALGO v2.0</span>
-            <div class="prediction-box" style="border-top: 2px solid var(--neon-purple);">
-                <span class="time-display" id="res-v-time">--:--</span>
-                <div class="cote-area">
-                    <div><span class="cote-label">MAX</span><span class="cote-val" id="res-v-cote">0.00x</span></div>
-                    <div><span class="cote-label">TARGET</span><span class="cote-val" style="color:#00ff00;" id="res-v-min">0.00x</span></div>
-                </div>
-            </div>
-            <div class="inputs-row">
-                <input type="number" id="h-violet" placeholder="HH" class="calibration-input">
-                <input type="number" id="m-violet" placeholder="MM" class="calibration-input">
-            </div>
-            <button class="btn-action" style="border-color:var(--neon-purple); color:var(--neon-purple);" onclick="lancerCalcul('violet')">ANALYZE</button>
-            <div class="ia-status" id="status-v">IA Cycle: 0/20 wins</div>
+    <div class="chat-toggle" onclick="toggleChat()">💬</div>
+    <div id="floating-chat">
+        <div class="chat-body" id="chat-content">
+            <div class="msg creator-msg"><b>CREATOR</b> Les 7 stratégies sont synchronisées. Prêt pour l'analyse.</div>
         </div>
-        <div id="hist-violet"></div>
     </div>
 
-    <div id="page-rose" class="page">
-        <div class="main-card">
-            <span style="color:var(--neon-red); font-weight:bold; font-size: 0.8rem;">PINK POISSON ENGINE</span>
-            <div class="prediction-box" style="border-top: 2px solid var(--neon-red);">
-                <span class="time-display" id="res-r-time">--:--</span>
-                <div class="cote-area">
-                    <div><span class="cote-label">MAX</span><span class="cote-val" id="res-r-cote">0.00x</span></div>
-                    <div><span class="cote-label">TARGET</span><span class="cote-val" style="color:#00ff00;" id="res-r-min">0.00x</span></div>
-                </div>
-            </div>
-            <div class="inputs-row">
-                <input type="number" id="h-rose" placeholder="HH" class="calibration-input">
-                <input type="number" id="m-rose" placeholder="MM" class="calibration-input">
-            </div>
-            <button class="btn-action" style="border-color:var(--neon-red); color:var(--neon-red);" onclick="lancerCalcul('rose')">ANALYZE</button>
-            <div class="ia-status" id="status-r">IA Cycle: 0/20 wins</div>
+    <div id="main-app">
+        <div class="header">
+            <h1>ANTHONIO</h1>
+            <div class="status">● <span id="online">547</span> NODES ACTIVE</div>
         </div>
-        <div id="hist-rose"></div>
-    </div>
 
-    <div id="page-gold" class="page">
-        <div class="main-card">
-            <span style="color:var(--neon-gold); font-weight:bold; font-size: 0.8rem;">GOLD LCG JACKPOT</span>
-            <div class="prediction-box" style="border-top: 2px solid var(--neon-gold);">
-                <span class="time-display" id="res-g-time">--:--</span>
-                <div class="cote-area">
-                    <div><span class="cote-label">MAX</span><span class="cote-val" id="res-g-cote">0.00x</span></div>
-                    <div><span class="cote-label">TARGET</span><span class="cote-val" style="color:#00ff00;" id="res-g-min">0.00x</span></div>
-                </div>
+        <div class="frame-container">
+            <div class="strat-card card-violet">
+                <span class="label">STRATÉGIE VIOLET (SAFE)</span>
+                <span class="val-cote" id="c1">2.10x</span>
+                <div class="entry-box"><span class="time-text" id="t1">--:--:--</span></div>
+                <div class="advice">Misez pour sécuriser le capital.</div>
             </div>
-            <div class="inputs-row">
-                <input type="number" id="h-gold" placeholder="HH" class="calibration-input">
-                <input type="number" id="m-gold" placeholder="MM" class="calibration-input">
+
+            <div class="strat-card">
+                <span class="label">STRATÉGIE LUCAS (PRO)</span>
+                <span class="val-cote" id="c2">8.50x</span>
+                <div class="entry-box"><span class="time-text" id="t2">--:--:--</span></div>
+                <div class="advice">Analyse de tendance Lucas v4.</div>
             </div>
-            <button class="btn-action" style="border-color:var(--neon-gold); color:var(--neon-gold);" onclick="lancerCalcul('gold')">ANALYZE</button>
-            <div class="ia-status" id="status-g">IA Cycle: 0/20 wins</div>
+
+            <div class="strat-card card-p10">
+                <span class="label">STRATÉGIE BULL (TREND)</span>
+                <span class="val-cote" id="c3">12.40x</span>
+                <div class="entry-box"><span class="time-text" id="t3">--:--:--</span></div>
+                <div class="advice">Suivez la montée du serveur.</div>
+            </div>
+
+            <div class="strat-card card-p5">
+                <span class="label">STRATÉGIE POWER-5 (PUISSANT)</span>
+                <span class="val-cote" id="c4">5.00x</span>
+                <div class="entry-box"><span class="time-text" id="t4">--:--:--</span></div>
+                <div class="advice">Cible logique intermédiaire.</div>
+            </div>
+
+            <div class="strat-card card-p10">
+                <span class="label">STRATÉGIE POWER-10 (PUISSANT)</span>
+                <span class="val-cote" id="c5">10.00x</span>
+                <div class="entry-box"><span class="time-text" id="t5">--:--:--</span></div>
+                <div class="advice">Cible cassure de cycle.</div>
+            </div>
+
+            <div class="strat-card card-gold">
+                <span class="label">STRATÉGIE TITAN (GOLD)</span>
+                <span class="val-cote" id="c6">55.00x</span>
+                <div class="entry-box"><span class="time-text" id="t6">--:--:--</span></div>
+                <div class="advice">Attendez le pattern Titan.</div>
+            </div>
+
+            <div class="strat-card card-red">
+                <span class="label">STRATÉGIE JACKPOT (MAX)</span>
+                <span class="val-cote" id="c7">100.00x</span>
+                <div class="entry-box"><span class="time-text" id="t7">--:--:--</span></div>
+                <div class="advice">Précision chirurgicale requise.</div>
+            </div>
         </div>
-        <div id="hist-gold"></div>
-    </div>
 
-    <nav class="nav-bar" id="bottom-nav" style="display:none;">
-        <div class="nav-item active purple" onclick="changePage('violet', this)"><span class="nav-icon">📊</span>VIOLET</div>
-        <div class="nav-item red" onclick="changePage('rose', this)"><span class="nav-icon">📈</span>PINK</div>
-        <div class="nav-item gold" onclick="changePage('gold', this)"><span class="nav-icon">🏆</span>GOLD</div>
-    </nav>
+        <div class="control-panel">
+            <div style="display:flex; justify-content:center; gap:10px;">
+                <input type="number" id="hh" placeholder="HH" class="num-in">
+                <input type="number" id="mm" placeholder="MM" class="num-in">
+            </div>
+            <button class="btn-scan" onclick="fullScan()">LANCER L'ANALYSE GLOBALE (7 STRATS)</button>
+        </div>
+    </div>
 
     <script>
-        let ai_memory = JSON.parse(localStorage.getItem('ai_memory')) || {
-            violet: { coeff: 1.0, wins: 0 }, rose: { coeff: 1.0, wins: 0 }, gold: { coeff: 1.0, wins: 0 }
-        };
+        const getFID = () => btoa(navigator.userAgent).substring(5, 20);
+        let db = JSON.parse(localStorage.getItem('ant_v32')) || [{key: "ANT-2010", hwid: null}];
 
-        function validerSucces(type) {
-            ai_memory[type].wins += 1;
-            let winsInCycle = ai_memory[type].wins % 20;
-            document.getElementById('status-' + type.charAt(0)).innerText = "IA Cycle: " + winsInCycle + "/20 wins";
-            if (ai_memory[type].wins % 20 === 0) {
-                ai_memory[type].coeff *= 0.96;
-                alert("STRATEGY UPDATED: Engine " + type + " optimized after 20 wins!");
-            }
-            localStorage.setItem('ai_memory', JSON.stringify(ai_memory));
+        function verify() {
+            const k = document.getElementById('access-key').value.trim().toUpperCase();
+            const fid = getFID();
+            const f = db.find(x => x.key === k);
+            if(!f) { alert("INVALIDE"); return; }
+            if(f.hwid === null) { f.hwid = fid; localStorage.setItem('ant_v32', JSON.stringify(db)); start(); }
+            else if(f.hwid === fid) { start(); }
+            else { alert("DÉJÀ LIÉ"); }
         }
 
-        function unlock() {
-            if(document.getElementById('access-c').value === "091110") {
-                document.getElementById('reg-screen').style.display = 'none';
-                document.getElementById('top-head').style.display = 'block';
-                document.getElementById('bottom-nav').style.display = 'flex';
-            } else { alert("WRONG CODE"); }
+        function start() {
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('main-app').style.display = 'block';
+            setInterval(() => document.getElementById('online').innerText = Math.floor(Math.random()*20)+540, 4000);
         }
 
-        function changePage(id, el) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            document.getElementById('page-' + id).classList.add('active');
-            el.classList.add('active');
+        function toggleChat() { document.getElementById('floating-chat').classList.toggle('open'); }
+
+        function fullScan() {
+            let h = parseInt(document.getElementById('hh').value);
+            let m = parseInt(document.getElementById('mm').value);
+            if(isNaN(h) || isNaN(m)) return;
+            let s = (h * 60) + m;
+
+            // Calcul des 7 stratégies avec leurs logiques respectives
+            calc(1, h, m, s, 6, 2.10);  // Violet
+            calc(2, h, m, s, 11, 8.50); // Lucas
+            calc(3, h, m, s, 15, 12.40);// Bull
+            calc(4, h, m, s, 9, 5.00);  // P5
+            calc(5, h, m, s, 18, 10.00); // P10
+            calc(6, h, m, s, 25, 55.00); // Titan
+            calc(7, h, m, s, 35, 100.00);// Jackpot
         }
 
-        function lancerCalcul(type) {
-            let h = parseInt(document.getElementById('h-' + type).value);
-            let m = parseInt(document.getElementById('m-' + type).value);
-            if(isNaN(h) || isNaN(m)) { alert("Enter calibration!"); return; }
-
-            let p = type.charAt(0);
-            document.getElementById('res-' + p + '-time').innerText = "--:--";
-
-            setTimeout(() => {
-                let inter = 0; let mx = 0; let c = ai_memory[type].coeff;
-                if(type === 'violet') { inter = Math.floor((((h+m)%7)+3)*c); mx = (2.1 + (m%2.5)).toFixed(2); }
-                else if(type === 'rose') { inter = Math.floor((12 + (m%10))*c); mx = (8 + (h%15)).toFixed(2); }
-                else { inter = Math.floor((30 + (m%20))*c); mx = (30 + (m*2)%100).toFixed(2); }
-
-                let tm = m + inter; let fh = (h + Math.floor(tm/60))%24; let fm = tm%60;
-                let res = fh.toString().padStart(2,'0')+":"+fm.toString().padStart(2,'0')+":"+((m*13)%59).toString().padStart(2,'0');
-                
-                document.getElementById('res-' + p + '-time').innerText = res;
-                document.getElementById('res-' + p + '-cote').innerText = mx + "x";
-                document.getElementById('res-' + p + '-min').innerText = (mx * 0.85).toFixed(2) + "x";
-
-                let hist = document.getElementById('hist-' + type);
-                let div = document.createElement('div');
-                div.className = 'history-item';
-                div.style.borderColor = type==='violet'?'#bc13fe':type==='rose'?'#ff003c':'#ffb800';
-                div.innerHTML = `<span>${res}</span> <button class="btn-win" onclick="validerSucces('${type}')">WIN</button> <b>${(mx*0.85).toFixed(2)}x</b>`;
-                hist.prepend(div);
-                if(hist.children.length > 2) hist.lastChild.remove();
-            }, 1000);
+        function calc(id, h, m, s, delay, base) {
+            let inter = (s % delay) + (delay / 2);
+            let total = (s * 60) + (inter * 60);
+            let rh = Math.floor((total / 3600) % 24);
+            let rm = Math.floor((total / 60) % 60);
+            let rs = Math.floor(total % 60);
+            document.getElementById('t'+id).innerText = rh.toString().padStart(2,'0')+":"+rm.toString().padStart(2,'0')+":"+rs.toString().padStart(2,'0');
+            
+            let cote = (base + (s % (base/3))).toFixed(2);
+            document.getElementById('c'+id).innerText = cote + "x";
         }
     </script>
 </body>
